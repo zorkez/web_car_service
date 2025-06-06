@@ -80,9 +80,7 @@ docker-compose build
 docker-compose up
 ```
 ### Приложение будет доступно по ссылке
-```python
-http://127.0.0.1:5000
-```
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
 ___
 ## Документация
 * [Python](https://docs.python.org/3.13/)
