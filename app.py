@@ -3,15 +3,11 @@ from models import db
 from auth import auth
 from requests import requests
 from admin import admin  
-import logging
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
 
 db.init_app(app)  
 @app.route('/')
@@ -23,4 +19,4 @@ app.register_blueprint(requests, url_prefix='/requests')
 app.register_blueprint(admin, url_prefix='/admin')  
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)
