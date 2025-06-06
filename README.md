@@ -31,7 +31,6 @@
 * `SQLAlchemy`
 * `sqlite3`
 * `Docker`
-* `Flask-Migrate` 
 * `werkzeug`
 * `numpy`
 * `pandas`
@@ -82,6 +81,14 @@ docker-compose up
 ```
 ___
 ## Документация
+* [Python](https://docs.python.org/3.13/)
+* [sqlite3](https://docs.python.org/3/library/sqlite3.html)
+* [docker](https://docs.docker.com/)
+* [Flask](https://flask-russian-docs.readthedocs.io/ru/0.10.1/)
+* [SQLAlchemy](https://docs.sqlalchemy.org/en/20/)
+* [werkzeug](https://werkzeug.palletsprojects.com/en/stable/).
+* [numpy](https://numpy.org/doc/)
+* [pandas](http://pandas.geekwriter.ru/getting_started/index.html)
 ___
 ## Авторы
 * [@zorkez](https://github.com/zorkez)
