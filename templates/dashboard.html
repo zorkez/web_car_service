@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Все заявки</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="logout-btn">
+        <a href="{{ url_for('auth.logout') }}" class="logout">Выйти</a>
+    </div>
+    <div class="container">
+        <h1>Список заявок</h1>
+
+        {% if session['role'] == 'admin' %}
+            <div class="forecast-form">
+                <form id="forecast-form">
+                    <label for="year">Выберите год:</label>
+                    <input type="number" name="year" id="year" value="{{ current_year }}" required>
+
+                    <label for="month">Выберите месяц:</label>
+                    <select name="month" id="month" required>
+                        <option value="1">Январь</option>
+                        <option value="2">Февраль</option>
+                        <option value="3">Март</option>
+                        <option value="4">Апрель</option>
+                        <option value="5">Май</option>
+                        <option value="6">Июнь</option>
+                        <option value="7">Июль</option>
+                        <option value="8">Август</option>
+                        <option value="9">Сентябрь</option>
+                        <option value="10">Октябрь</option>
+                        <option value="11">Ноябрь</option>
+                        <option value="12">Декабрь</option>
+                    </select>
+
+                    <button type="submit">Рассчитать прогноз</button>
+                </form>
+
+                <div id="forecast-result" class="forecast-result"></div>
+            </div>
+
+            <script>
+                document.getElementById('forecast-form').addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    let formData = new FormData(this);
+                    
+                    fetch("{{ url_for('admin.calculate_forecast') }}", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('forecast-result').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            </script>
+        {% endif %}
+        <a href="{{ url_for('requests.request_repair') }}" class="btn-create">Создать новую заявку</a><br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Тип заявки</th>
+                    <th>Описание</th>
+                    <th>Номер авто</th>
+                    <th>Статус</th>
+                    <th>Мастер</th>
+                    <th>Дата открытия</th>
+                    <th>Дата закрытия</th>
+                    <th>ФИО заказчика</th>
+                    <th>Телефон заказчика</th>
+                    <th>Почта заказчика</th>
+                    <th>Изменить</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.request_type | replace("repair", "Ремонт") | replace("maintenance", "Техническое Обслуживание") }}</td>
+                    <td>{{ request.description }}</td>
+                    <td>{{ request.car_number }}</td>
+                    <td>{{ request.status | replace("new", "Новый") | replace("in_work", "В работе") | replace("completed", "Завершен") }}</td>
+                    <td>{{ request.master.full_name if request.master else 'Не назначен' }}</td>
+                    <td>{{ request.date_opened }}</td>
+                    <td>{{ request.date_closed }}</td>
+                    <td>{{ request.customer_name }}</td>
+                    <td>{{ request.customer_phone }}</td>
+                    <td>{{ request.customer_email }}</td>
+                    <td>
+                        <a href="{{ url_for('requests.edit_request', request_id=request.id) }}">Изменить</a>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('requests.delete_request', request_id=request.id) }}" style="display:inline;">
+                            <button type="submit">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if total_pages > 1 %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('admin.dashboard', page=page-1) }}">Назад</a>
+            {% endif %}
+            {% for p in range(1, total_pages+1) %}
+                <a href="{{ url_for('admin.dashboard', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+            {% endfor %}
+            {% if page < total_pages %}
+                <a href="{{ url_for('admin.dashboard', page=page+1) }}">Вперед</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

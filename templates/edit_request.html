@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать заявку</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Редактировать заявку</h1>
+    <form method="POST">
+        <select name="request_type" required>
+            <option value="repair" {% if request.request_type == 'repair' %}selected{% endif %}>Ремонт</option>
+            <option value="maintenance" {% if request.request_type == 'maintenance' %}selected{% endif %}>Техническое Обслуживание</option>
+        </select><br>
+
+        <textarea name="description" placeholder="Описание" required>{{ request.description }}</textarea><br>
+        <input type="text" name="car_number" placeholder="Номер авто" required value="{{ request.car_number }}"><br>
+
+        {% if session['role'] == 'admin' %}
+        <select name="status" required>
+            <option value="new" {% if request.status == 'new' %}selected{% endif %}>Новый</option>
+            <option value="in_work" {% if request.status == 'in_work' %}selected{% endif %}>В работе</option>
+            <option value="completed" {% if request.status == 'completed' %}selected{% endif %}>Завершен</option>
+        </select><br>
+        {% else %}
+        <input type="text" value="{{ request.status }}" disabled><br>
+        {% endif %}
+
+        <input type="text" name="master" id="master" placeholder="Выберите мастера" list="masters_list" value="{{ request.master.full_name if request.master else '' }}" required><br>
+        <datalist id="masters_list">
+            {% for master in masters %}
+            <option value="{{ master.full_name }}">
+            {% endfor %}
+        </datalist><br>
+        <button type="submit">Обновить заявку</button>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn-back">Назад</a>
+        <form method="POST" action="{{ url_for('requests.delete_request', request_id=request.id) }}" style="display:inline;">
+            <button type="submit" class="btn-delete">Удалить заявку</button>
+        </form>
+    </form>
+</body>
+</html>
