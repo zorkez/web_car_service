@@ -86,7 +86,7 @@ ___
 * [docker](https://docs.docker.com/)
 * [Flask](https://flask-russian-docs.readthedocs.io/ru/0.10.1/)
 * [SQLAlchemy](https://docs.sqlalchemy.org/en/20/)
-* [werkzeug](https://werkzeug.palletsprojects.com/en/stable/).
+* [werkzeug](https://werkzeug.palletsprojects.com/en/stable/)
 * [numpy](https://numpy.org/doc/)
 * [pandas](http://pandas.geekwriter.ru/getting_started/index.html)
 ___
