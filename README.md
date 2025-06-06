@@ -37,7 +37,7 @@
 ___
 
 ## Функционал приложения
-* [Ссылка на видео](https://disk.yandex.ru/i/2Wtw0IZkyHtbhQ)
+* [Ссылка на видео](https://disk.yandex.ru/i/wzFLaQjR6PbeqA)
 ___
 ## Структура проекта
 
